@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KARIN - Dashboard Utama</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #071e3d, #0e3a66);
+      color: #e0e7ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      background-color: #2563eb;
+      color: white;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 4px 8px rgb(37 99 235 / 0.3);
+    }
+    button:hover, button:focus {
+      background-color: #1e40af;
+      outline: none;
+      transform: scale(1.05);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    header {
+      background: linear-gradient(90deg, #2563ebcc, #1e40afcc);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+      color: white;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    header .logo .material-icons {
+      font-size: 32px;
+      color: #93c5fd;
+    }
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+    nav a {
+      font-weight: 600;
+      color: #c7d2fe;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    nav a:hover, nav a:focus {
+      background-color: #1e40af;
+      outline: none;
+      color: #bfdbfe;
+    }
+    main {
+      flex-grow: 1;
+      padding: 40px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+    .card {
+      background: rgba(255 255 255 / 0.1);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #e0e7ff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover, .card:focus-within {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 48px rgb(37 99 235 / 0.6);
+      outline: none;
+    }
+    .card .card-header {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .card .material-icons.card-icon {
+      font-size: 28px;
+      color: #60a5fa;
+    }
+    .card .status-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+    .card .status-label {
+      color: #c7d2feaa;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .card .btn-control {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+    footer {
+      background: #0e1541;
+      color: #a5b4fc;
+      padding: 24px;
+      text-align: center;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+    @media (max-width: 640px) {
+      main {
+        padding: 24px 12px;
+        grid-template-columns: 1fr;
+      }
+      nav {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header role="banner" aria-label="Main header">
+    <div class="logo" aria-label="KARIN logo">
+      <span class="material-icons" aria-hidden="true">water_drop</span>
+      <span>KARIN</span>
+    </div>
+    <nav role="navigation" aria-label="Primary navigation">
+      <a href="#" tabindex="0" data-page="dashboard">Dashboard</a>
+      <a href="#" tabindex="0" data-page="settings">Pengaturan</a>
+      <a href="#" tabindex="0" data-page="graph">Grafik</a>
+      <a href="#" tabindex="0" data-page="history">Riwayat</a>
+      <a href="#" tabindex="0" data-page="alerts">Peringatan</a>
+    </nav>
+  </header>
+  <main role="main" aria-label="Dashboard main content" id="main-content">
+    <!--Content loaded dynamically-->
+    <section class="card" tabindex="0" aria-labelledby="moisture-title" aria-describedby="moisture-desc">
+      <div class="card-header">
+        <span class="material-icons card-icon" aria-hidden="true">water_drop</span>
+        <h2 id="moisture-title">Kelembaban Tanah</h2>
+      </div>
+      <div class="status-value" id="moisture-status" aria-live="polite" aria-atomic="true">68%</div>
+      <div class="status-label" id="moisture-desc">Status kelembaban saat ini</div>
+    </section>
+    <section class="card" tabindex="0" aria-labelledby="pump-title" aria-describedby="pump-desc">
+      <div class="card-header">
+        <span class="material-icons card-icon" aria-hidden="true">power</span>
+        <h2 id="pump-title">Status Pompa</h2>
+      </div>
+      <div class="status-value" id="pump-status" aria-live="polite" aria-atomic="true">Menyala</div>
+      <button class="btn-control" aria-label="Kontrol Pompa" id="pump-control">Matikan Pompa</button>
+    </section>
+    <section class="card" tabindex="0" aria-labelledby="water-title" aria-describedby="water-desc">
+      <div class="card-header">
+        <span class="material-icons card-icon" aria-hidden="true">opacity</span>
+        <h2 id="water-title">Level Air</h2>
+      </div>
+      <div class="status-value" id="water-level" aria-live="polite" aria-atomic="true">Medium</div>
+      <div class="status-label" id="water-desc">Ketinggian air saat ini</div>
+    </section>
+  </main>
+  <footer role="contentinfo">
+    &copy; 2025 KARIN - Sistem Monitoring Irigasi Otomatis
+  </footer>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const pumpControlBtn = document.getElementById('pump-control');
+    const pumpStatus = document.getElementById('pump-status');
+
+    pumpControlBtn.addEventListener('click', () => {
+      if (pumpStatus.textContent.toLowerCase().includes('menyala')) {
+        pumpStatus.textContent = 'Mati';
+        pumpControlBtn.textContent = 'Nyalakan Pompa';
+        pumpControlBtn.style.backgroundColor = '#dc2626'; // red
+      } else {
+        pumpStatus.textContent = 'Menyala';
+        pumpControlBtn.textContent = 'Matikan Pompa';
+        pumpControlBtn.style.backgroundColor = '#2563eb'; // blue
+      }
+    });
+
+    function randomPercentage(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function updateStats() {
+      const moistureVal = randomPercentage(50, 75);
+      document.getElementById('moisture-status').textContent = moistureVal + '%';
+
+      const waterLevels = ['Rendah', 'Medium', 'Tinggi'];
+      const randomWater = waterLevels[Math.floor(Math.random() * waterLevels.length)];
+      document.getElementById('water-level').textContent = randomWater;
+    }
+
+    setInterval(updateStats, 10000);
+
+    const navLinks = document.querySelectorAll('nav a');
+    const mainContent = document.getElementById('main-content');
+
+    // Chart instance variable
+    let moistureChart = null;
+
+    // Pages content
+    const pages = {
+      dashboard: `
+        <section class="card" tabindex="0" aria-labelledby="moisture-title" aria-describedby="moisture-desc">
+          <div class="card-header">
+            <span class="material-icons card-icon" aria-hidden="true">water_drop</span>
+            <h2 id="moisture-title">Kelembaban Tanah</h2>
+          </div>
+          <div class="status-value" id="moisture-status" aria-live="polite" aria-atomic="true">68%</div>
+          <div class="status-label" id="moisture-desc">Status kelembaban saat ini</div>
+        </section>
+        <section class="card" tabindex="0" aria-labelledby="pump-title" aria-describedby="pump-desc">
+          <div class="card-header">
+            <span class="material-icons card-icon" aria-hidden="true">power</span>
+            <h2 id="pump-title">Status Pompa</h2>
+          </div>
+          <div class="status-value" id="pump-status" aria-live="polite" aria-atomic="true">Menyala</div>
+          <button class="btn-control" aria-label="Kontrol Pompa" id="pump-control">Matikan Pompa</button>
+        </section>
+        <section class="card" tabindex="0" aria-labelledby="water-title" aria-describedby="water-desc">
+          <div class="card-header">
+            <span class="material-icons card-icon" aria-hidden="true">opacity</span>
+            <h2 id="water-title">Level Air</h2>
+          </div>
+          <div class="status-value" id="water-level" aria-live="polite" aria-atomic="true">Medium</div>
+          <div class="status-label" id="water-desc">Ketinggian air saat ini</div>
+        </section>
+      `,
+      settings: `
+        <section class="card">
+          <h2>Pengaturan Sistem</h2>
+          <form id="settings-form">
+            <label for="moisture-threshold">Ambang Kelembaban (%)</label>
+            <input type="number" id="moisture-threshold" min="0" max="100" value="60" required>
+            <button type="submit">Simpan Pengaturan</button>
+          </form>
+        </section>
+      `,
+      graph: `
+        <section class="card" style="grid-column: 1 / -1;">
+          <h2>Grafik Monitoring Kelembaban & Status Pompa</h2>
+          <canvas id="moistureGraph" style="width:100%;height:350px;"></canvas>
+        </section>
+      `,
+      history: `
+        <section class="card" style="grid-column: 1 / -1;">
+          <h2>Riwayat dan Laporan</h2>
+          <table style="width: 100%; border-collapse: collapse; color: #e0e7ff;">
+            <thead>
+              <tr style="border-bottom: 1px solid #93c5fd;">
+                <th style="padding: 8px;">Tanggal</th>
+                <th style="padding: 8px;">Kelembaban Tanah</th>
+                <th style="padding: 8px;">Status Pompa</th>
+                <th style="padding: 8px;">Penggunaan Air</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding: 8px;">2024-04-25</td><td style="padding: 8px;">65%</td><td style="padding: 8px;">Menyala</td><td style="padding: 8px;">150L</td></tr>
+              <tr><td style="padding: 8px;">2024-04-24</td><td style="padding: 8px;">70%</td><td style="padding: 8px;">Mati</td><td style="padding: 8px;">0L</td></tr>
+              <tr><td style="padding: 8px;">2024-04-23</td><td style="padding: 8px;">55%</td><td style="padding: 8px;">Menyala</td><td style="padding: 8px;">140L</td></tr>
+            </tbody>
+          </table>
+        </section>
+      `,
+      alerts: `
+        <section class="card" style="grid-column: 1 / -1;">
+          <h2>Peringatan dan Notifikasi</h2>
+          <ul>
+            <li>Peringatan: Air hampir habis!</li>
+            <li>Peringatan: Anomali dalam data kelembaban tanah!</li>
+            <li>Notifikasi: Pompa dinyalakan secara otomatis.</li>
+          </ul>
+        </section>
+      `
+    };
+
+    function loadPage(page) {
+      if (!(page in pages)) page = 'dashboard';
+      mainContent.innerHTML = pages[page];
+
+      // Re-bind button & event listeners when dashboard is loaded
+      if (page === 'dashboard') {
+        const pumpControlBtn = document.getElementById('pump-control');
+        const pumpStatus = document.getElementById('pump-status');
+
+        pumpControlBtn.style.backgroundColor = pumpStatus.textContent.toLowerCase().includes('menyala') ? '#2563eb' : '#dc2626';
+
+        pumpControlBtn.addEventListener('click', () => {
+          if (pumpStatus.textContent.toLowerCase().includes('menyala')) {
+            pumpStatus.textContent = 'Mati';
+            pumpControlBtn.textContent = 'Nyalakan Pompa';
+            pumpControlBtn.style.backgroundColor = '#dc2626';
+          } else {
+            pumpStatus.textContent = 'Menyala';
+            pumpControlBtn.textContent = 'Matikan Pompa';
+            pumpControlBtn.style.backgroundColor = '#2563eb';
+          }
+        });
+
+        // Also start updateStats interval again
+        updateStats();
+        clearInterval(window.statsInterval);
+        window.statsInterval = setInterval(updateStats, 10000);
+      }
+
+      if (page === 'graph') {
+        renderGraph();
+      }
+
+      if (page === 'settings') {
+        const form = document.getElementById('settings-form');
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          alert('Pengaturan berhasil disimpan: Ambang Kelembaban ' + form['moisture-threshold'].value + '%');
+        });
+      }
+    }
+
+    function renderGraph() {
+      const ctx = document.getElementById('moistureGraph').getContext('2d');
+      if (moistureChart != null) {
+        moistureChart.destroy();
+      }
+      const labels = [
+        '10 Apr', '11 Apr', '12 Apr', '13 Apr', '14 Apr', '15 Apr', '16 Apr', '17 Apr', '18 Apr', '19 Apr'
+      ];
+      const moistureData = [65, 62, 70, 74, 69, 55, 57, 60, 66, 63];
+      const pumpStatusData = [1, 1, 0, 1, 1, 0, 0, 1, 1, 0];
+
+      moistureChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Kelembaban Tanah (%)',
+              data: moistureData,
+              borderColor: '#60a5fa',
+              backgroundColor: 'rgba(96, 165, 250, 0.3)',
+              fill: true,
+              tension: 0.3,
+              yAxisID: 'y',
+              pointRadius: 6,
+              pointHoverRadius: 8,
+            },
+            {
+              label: 'Status Pompa (On=1, Off=0)',
+              data: pumpStatusData,
+              borderColor: '#fde68a',
+              backgroundColor: 'rgba(253, 230, 138, 0.3)',
+              fill: true,
+              type: 'line',
+              stepped: true,
+              yAxisID: 'y1',
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          stacked: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#c7d2fe',
+              }
+            },
+            tooltip: {
+                mode: 'index',
+                intersect: false,
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: '#c7d2fe',
+              },
+              grid: {
+                color: 'rgba(199, 210, 254,0.1)'
+              }
+            },
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              min: 40,
+              max: 80,
+              ticks: {
+                color: '#60a5fa',
+                stepSize: 5,
+              },
+              grid: {
+                color: 'rgba(96, 165, 250, 0.2)'
+              },
+              title: {
+                display: true,
+                text: 'Kelembaban (%)',
+                color: '#60a5fa',
+                font: {
+                  weight: 'bold',
+                }
+              }
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              min: 0,
+              max: 1.5,
+              ticks: {
+                color: '#fde68a',
+                stepSize: 1,
+                callback: v => (v === 1 ? 'On' : 'Off'),
+              },
+              grid: {
+                drawOnChartArea: false,
+              },
+              title: {
+                display: true,
+                text: 'Status Pompa',
+                color: '#fde68a',
+                font: {
+                  weight: 'bold',
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const page = e.target.getAttribute('data-page');
+        loadPage(page);
+        // Update active link styling
+        navLinks.forEach(l => l.classList.remove('active'));
+        e.target.classList.add('active');
+      });
+    });
+
+    // Load default page dashboard on start
+    loadPage('dashboard');
+    // highlight first nav link as active
+    navLinks[0].classList.add('active');
+  </script>
+</body>
+</html>
+
