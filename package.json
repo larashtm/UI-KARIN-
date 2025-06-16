@@ -1,0 +1,14 @@
+{
+  "name": "karin-ui",
+  "version": "1.0.0",
+  "description": "User Interface for KARIN Project",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'No build process required'"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [],
+  "author": "lar",
+  "license": "MIT"
+}
