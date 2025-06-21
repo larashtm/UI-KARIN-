@@ -4,7 +4,7 @@
   "description": "User Interface for KARIN Project",
   "main": "index.html",
   "scripts": {
-    "start": "echo 'No build process required'"
+    "build": "echo 'No build required'"
   },
   "dependencies": {},
   "devDependencies": {},

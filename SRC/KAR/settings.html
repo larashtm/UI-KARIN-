@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pengaturan Sistem - KARIN</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Styling untuk halaman pengaturan */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #071e3d, #0e3a66);
+      color: #e0e7ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    header {
+      background: linear-gradient(90deg, #2563ebcc, #1e40afcc);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    nav a {
+      font-weight: 600;
+      color: #c7d2fe;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover, nav a:focus {
+      background-color: #1e40af;
+      outline: none;
+      color: #bfdbfe;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 40px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #93c5fd;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+    }
+
+    .btn-save {
+      padding: 12px 24px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-save:hover {
+      background-color: #1e40af;
+      transform: scale(1.05);
+    }
+
+    .btn-save:active {
+      transform: scale(0.98);
+    }
+
+    footer {
+      background: #0e1541;
+      color: #a5b4fc;
+      padding: 24px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="material-icons" aria-hidden="true">water_drop</span>
+      <span>KARIN</span>
+    </div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="settings.html">Pengaturan</a>
+      <a href="graph.html">Grafik</a>
+      <a href="data-history.html">Riwayat</a>
+      <a href="alerts.html">Peringatan</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Pengaturan Sistem</h2>
+
+    <!-- Form untuk mengatur setpoint kelembaban tanah dan jenis tanaman -->
+    <form id="settings-form">
+      <!-- Setpoint Kelembaban Tanah -->
+      <div class="form-group">
+        <label for="moisture-threshold">Ambang Kelembaban Tanah (%)</label>
+        <input type="number" id="moisture-threshold" class="form-control" min="0" max="100" value="60" required />
+      </div>
+
+      <!-- Jenis Tanaman -->
+      <div class="form-group">
+        <label for="plant-type">Jenis Tanaman</label>
+        <select id="plant-type" class="form-control" required>
+          <option value="sayuran">Sayuran</option>
+          <option value="buah">Buah</option>
+          <option value="bunga">Bunga</option>
+        </select>
+      </div>
+
+      <!-- Tombol Simpan Pengaturan -->
+      <button type="submit" class="btn-save">Simpan Pengaturan</button>
+    </form>
+  </main>
+
+  <footer>
+    &copy; KARIN
+  </footer>
+
+  <script>
+    // Fungsi untuk menyimpan pengaturan
+    document.getElementById('settings-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Ambil nilai dari input dan select
+      const moistureThreshold = document.getElementById('moisture-threshold').value;
+      const plantType = document.getElementById('plant-type').value;
+
+      // Simpan pengaturan di localStorage
+      localStorage.setItem('moistureThreshold', moistureThreshold);
+      localStorage.setItem('plantType', plantType);
+
+      // Tampilkan notifikasi sukses
+      alert(`Pengaturan berhasil disimpan! Kelembaban setpoint: ${moistureThreshold}% dan Jenis Tanaman: ${plantType}`);
+    });
+
+    // Cek apakah pengaturan sebelumnya ada di localStorage dan tampilkan
+    window.onload = function () {
+      const moistureThreshold = localStorage.getItem('moistureThreshold');
+      const plantType = localStorage.getItem('plantType');
+
+      if (moistureThreshold) {
+        document.getElementById('moisture-threshold').value = moistureThreshold;
+      }
+
+      if (plantType) {
+        document.getElementById('plant-type').value = plantType;
+      }
+    };
+  </script>
+</body>
+<script src="script.js"></script>
+</html>

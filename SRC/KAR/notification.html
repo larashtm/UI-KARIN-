@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Peringatan dan Notifikasi - KARIN</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Styling untuk halaman notifikasi */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #071e3d, #0e3a66);
+      color: #e0e7ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    header {
+      background: linear-gradient(90deg, #2563ebcc, #1e40afcc);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    nav a {
+      font-weight: 600;
+      color: #c7d2fe;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover, nav a:focus {
+      background-color: #1e40af;
+      outline: none;
+      color: #bfdbfe;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 40px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .notification-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgb(0 0 0 / 0.1);
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      color: #e0e7ff;
+    }
+
+    .notification-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .notification-card p {
+      margin-bottom: 16px;
+    }
+
+    .btn-action {
+      padding: 12px 24px;
+      background-color: #2563eb;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-action:hover {
+      background-color: #1e40af;
+      transform: scale(1.05);
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    footer {
+      background: #0e1541;
+      color: #a5b4fc;
+      padding: 24px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="material-icons" aria-hidden="true">water_drop</span>
+      <span>KARIN</span>
+    </div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="settings.html">Pengaturan</a>
+      <a href="graph.html">Grafik</a>
+      <a href="data-history.html">Riwayat</a>
+      <a href="alerts.html">Peringatan</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Peringatan dan Notifikasi</h2>
+
+    <!-- Peringatan Air Hampir Habis -->
+    <div class="notification-card">
+      <h3>Peringatan: Air Hampir Habis!</h3>
+      <p>Jumlah air dalam tangki sudah rendah. Segera isi tangki untuk memastikan sistem irigasi tetap berjalan dengan lancar.</p>
+      <button class="btn-action" id="action-1">Tindak Lanjut</button>
+    </div>
+
+    <!-- Peringatan Anomali Data Kelembaban Tanah -->
+    <div class="notification-card">
+      <h3>Peringatan: Anomali Data Kelembaban Tanah</h3>
+      <p>Terdapat ketidaksesuaian dalam data kelembaban tanah. Silakan cek sensor kelembaban atau sistem irigasi.</p>
+      <button class="btn-action" id="action-2">Tindak Lanjut</button>
+    </div>
+
+    <!-- Peringatan Status Pompa -->
+    <div class="notification-card">
+      <h3>Peringatan: Pompa Tidak Berfungsi</h3>
+      <p>Pompa air tidak berfungsi sebagaimana mestinya. Segera periksa sistem pompa.</p>
+      <button class="btn-action" id="action-3">Periksa Pompa</button>
+    </div>
+  </main>
+
+  <footer>
+    &copy; KARIN
+  </footer>
+
+  <script>
+    // Menangani tombol tindakan untuk notifikasi
+    document.getElementById('action-1').addEventListener('click', () => {
+      alert('Tindak lanjut untuk air hampir habis.');
+      // Logika tindak lanjut (misalnya menyalakan pompa, atau menambah air)
+    });
+
+    document.getElementById('action-2').addEventListener('click', () => {
+      alert('Tindak lanjut untuk anomali data kelembaban tanah.');
+      // Logika tindak lanjut untuk mengatasi anomali data
+    });
+
+    document.getElementById('action-3').addEventListener('click', () => {
+      alert('Tindak lanjut untuk memeriksa pompa.');
+      // Logika untuk memeriksa pompa
+    });
+  </script>
+</body>
+<script src="script.js"></script>
+</html>
