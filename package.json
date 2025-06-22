@@ -2,7 +2,7 @@
   "name": "karin-ui",
   "version": "1.0.0",
   "description": "User Interface for KARIN Project",
-  "main": "SRC/server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node SRC/server.js"
   },
