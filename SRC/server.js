@@ -1,37 +1,21 @@
 const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const path = require('path');
 
-app.use(bodyParser.json());
+// Serve semua file di folder 'SRC'
+app.use(express.static(path.join(__dirname)));
 
-// Koneksi ke database MySQL
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',         // ganti sesuai user MySQL kamu
-  password: 'cacasayangmama',         // ganti sesuai password MySQL kamu
-  database: 'karin_db'  // ganti sesuai nama database kamu
+// Route utama
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Endpoint login
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  db.query(
-    'SELECT * FROM users WHERE username = ? AND password = ?',
-    [username, password],
-    (err, results) => {
-      if (err) return res.status(500).json({ error: 'Database error' });
-      if (results.length > 0) {
-        res.json({ success: true, user: results[0] });
-      } else {
-        res.json({ success: false, message: 'Username atau password salah' });
-      }
-    }
-  );
+// Route login
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-// Jalankan server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

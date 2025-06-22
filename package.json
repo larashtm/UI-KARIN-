@@ -2,10 +2,9 @@
   "name": "karin-ui",
   "version": "1.0.0",
   "description": "User Interface for KARIN Project",
-  "main": "server.js",
-
+  "main": "SRC/server.js",
   "scripts": {
-    "build": "echo 'No build required'"
+    "start": "node SRC/server.js"
   },
   "dependencies": {
     "body-parser": "^2.2.0",
