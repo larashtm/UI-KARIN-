@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -20,11 +18,7 @@
       flex-direction: column;
       overflow-x: hidden;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-      cursor: pointer;
-    }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
     button {
       cursor: pointer;
       border: none;
@@ -42,9 +36,7 @@
       outline: none;
       transform: scale(1.05);
     }
-    button:active {
-      transform: scale(0.98);
-    }
+    button:active { transform: scale(0.98); }
     header {
       background: linear-gradient(90deg, #2563ebcc, #1e40afcc);
       padding: 16px 24px;
@@ -66,14 +58,8 @@
       align-items: center;
       gap: 8px;
     }
-    header .logo .material-icons {
-      font-size: 32px;
-      color: #93c5fd;
-    }
-    nav {
-      display: flex;
-      gap: 24px;
-    }
+    header .logo .material-icons { font-size: 32px; color: #93c5fd; }
+    nav { display: flex; gap: 24px; }
     nav a {
       font-weight: 600;
       color: #c7d2fe;
@@ -86,6 +72,10 @@
       background-color: #1e40af;
       outline: none;
       color: #bfdbfe;
+    }
+    nav a.active {
+      background-color: #1e40af;
+      color: #fff;
     }
     main {
       flex-grow: 1;
@@ -121,10 +111,7 @@
       align-items: center;
       gap: 12px;
     }
-    .card .material-icons.card-icon {
-      font-size: 28px;
-      color: #60a5fa;
-    }
+    .card .material-icons.card-icon { font-size: 28px; color: #60a5fa; }
     .card .status-value {
       font-size: 2.5rem;
       font-weight: 800;
@@ -155,9 +142,7 @@
         padding: 24px 12px;
         grid-template-columns: 1fr;
       }
-      nav {
-        gap: 12px;
-      }
+      nav { gap: 12px; }
     }
   </style>
 </head>
@@ -176,74 +161,20 @@
     </nav>
   </header>
   <main role="main" aria-label="Dashboard main content" id="main-content">
-    <!--Content loaded dynamically-->
-    <section class="card" tabindex="0" aria-labelledby="moisture-title" aria-describedby="moisture-desc">
-      <div class="card-header">
-        <span class="material-icons card-icon" aria-hidden="true">water_drop</span>
-        <h2 id="moisture-title">Kelembaban Tanah</h2>
-      </div>
-      <div class="status-value" id="moisture-status" aria-live="polite" aria-atomic="true">68%</div>
-      <div class="status-label" id="moisture-desc">Status kelembaban saat ini</div>
-    </section>
-    <section class="card" tabindex="0" aria-labelledby="pump-title" aria-describedby="pump-desc">
-      <div class="card-header">
-        <span class="material-icons card-icon" aria-hidden="true">power</span>
-        <h2 id="pump-title">Status Pompa</h2>
-      </div>
-      <div class="status-value" id="pump-status" aria-live="polite" aria-atomic="true">Menyala</div>
-      <button class="btn-control" aria-label="Kontrol Pompa" id="pump-control">Matikan Pompa</button>
-    </section>
-    <section class="card" tabindex="0" aria-labelledby="water-title" aria-describedby="water-desc">
-      <div class="card-header">
-        <span class="material-icons card-icon" aria-hidden="true">opacity</span>
-        <h2 id="water-title">Level Air</h2>
-      </div>
-      <div class="status-value" id="water-level" aria-live="polite" aria-atomic="true">Medium</div>
-      <div class="status-label" id="water-desc">Ketinggian air saat ini</div>
-    </section>
+    <!-- Content loaded dynamically -->
   </main>
   <footer role="contentinfo">
-    &copy; KARIN - 
+    &copy; KARIN - Kinetic Automatic Rice-water and Ingredients IoT Network
   </footer>
 
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const pumpControlBtn = document.getElementById('pump-control');
-    const pumpStatus = document.getElementById('pump-status');
-
-    pumpControlBtn.addEventListener('click', () => {
-      if (pumpStatus.textContent.toLowerCase().includes('menyala')) {
-        pumpStatus.textContent = 'Mati';
-        pumpControlBtn.textContent = 'Nyalakan Pompa';
-        pumpControlBtn.style.backgroundColor = '#dc2626'; // red
-      } else {
-        pumpStatus.textContent = 'Menyala';
-        pumpControlBtn.textContent = 'Matikan Pompa';
-        pumpControlBtn.style.backgroundColor = '#2563eb'; // blue
-      }
-    });
-
-    function randomPercentage(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
-    function updateStats() {
-      const moistureVal = randomPercentage(50, 75);
-      document.getElementById('moisture-status').textContent = moistureVal + '%';
-
-      const waterLevels = ['Rendah', 'Medium', 'Tinggi'];
-      const randomWater = waterLevels[Math.floor(Math.random() * waterLevels.length)];
-      document.getElementById('water-level').textContent = randomWater;
-    }
-
-    setInterval(updateStats, 10000);
-
     const navLinks = document.querySelectorAll('nav a');
     const mainContent = document.getElementById('main-content');
-
-    // Chart instance variable
     let moistureChart = null;
+    let pumpIsOn = true;
+    let statsInterval = null;
 
     // Pages content
     const pages = {
@@ -274,18 +205,60 @@
         </section>
       `,
       settings: `
-        <section class="card">
-          <h2>Pengaturan Sistem</h2>
+      <div style="display: flex; gap: 2rem; align-items: flex-start;">
+        <!-- Kartu Pengaturan Sistem -->
+        <section class="card" style="flex:2; min-width:320px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+            <span class="material-icons card-icon" style="font-size: 2.5rem; color: #60a5fa;">settings</span>
+            <h2 style="margin: 0;">Pengaturan Sistem</h2>
+          </div>
+          <p style="margin-bottom: 2rem; color: #c7d2fe;">
+            Atur ambang batas kelembaban tanah untuk sistem irigasi otomatis. Sistem akan menyalakan pompa jika kelembaban di bawah nilai ini.
+          </p>
           <form id="settings-form">
-            <label for="moisture-threshold">Ambang Kelembaban (%)</label>
-            <input type="number" id="moisture-threshold" min="0" max="100" value="60" required>
-            <button type="submit">Simpan Pengaturan</button>
+            <div style="display: flex; align-items: center; gap: 2rem;">
+              <div style="position: relative; width: 110px; height: 110px;">
+                <canvas id="moistureCircle" width="110" height="110"></canvas>
+                <div style="position: absolute; top: 0; left: 0; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center;">
+                  <span class="material-icons" style="font-size: 3.5rem; color: #60a5fa;">water_drop</span>
+                </div>
+              </div>
+              <div>
+                <label for="moisture-threshold" style="font-weight: 600; font-size: 1.1rem;">Ambang Kelembaban (%)</label><br>
+                <input type="number" id="moisture-threshold" min="0" max="100" value="60" required style="width: 70px; padding: 8px; border-radius: 6px; border: 1px solid #93c5fd; font-size:1.1rem; margin-top:0.5rem;">
+              </div>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+              <button type="submit" style="background: #2563eb; color: #fff; font-weight: 600; border-radius: 8px; padding: 12px 24px; border: none;">Simpan Pengaturan</button>
+              <button type="button" id="update-threshold" style="background: #1e40af; color: #fff; font-weight: 600; border-radius: 8px; padding: 12px 24px; border: none;">Update</button>
+            </div>
           </form>
         </section>
+        <!-- Status Sistem -->
+        <aside class="card" style="flex:1; min-width:220px; max-width:270px; background:rgba(37,99,235,0.13);">
+          <h3 style="margin-top:0; margin-bottom:1.2rem; color:#fff;">Status Sistem</h3>
+          <ul style="list-style:none; padding:0; margin:0; color:#e0e7ff; font-size:1.08rem;">
+            <li style="margin-bottom:0.8rem;"><span class="material-icons" style="font-size:1.2em;vertical-align:middle;color:#60a5fa;">wifi</span> ESP32: <span style="color:#22c55e;font-weight:600;">Online</span></li>
+            <li style="margin-bottom:0.8rem;"><span class="material-icons" style="font-size:1.2em;vertical-align:middle;color:#60a5fa;">battery_full</span> Baterai: 80 %</li>
+            <li style="margin-bottom:0.8rem;"><span class="material-icons" style="font-size:1.2em;vertical-align:middle;color:#60a5fa;">water_drop</span> Kelembaban Terakhir: 45%</li>
+            <li><span class="material-icons" style="font-size:1.2em;vertical-align:middle;color:#60a5fa;">settings</span> Pompa: <span style="color:#dc2626;font-weight:600;">Mati</span></li>
+          </ul>
+        </aside>
+      </div>
       `,
       graph: `
         <section class="card" style="grid-column: 1 / -1;">
           <h2>Grafik Monitoring Kelembaban & Status Pompa</h2>
+          <div style="margin-bottom:1.5rem;">
+            <label for="range-select" style="font-weight:600;">Rentang Waktu:</label>
+            <select id="range-select" style="margin-left:1rem;padding:0.5rem 1rem;border-radius:8px;">
+              <option value="harian">Harian</option>
+              <option value="bulanan">Bulanan</option>
+            </select>
+            <button id="download-btn" style="margin-left:2rem;background:#2563eb;color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;border:none;cursor:pointer;">
+              Unduh Data
+            </button>
+          </div>
           <canvas id="moistureGraph" style="width:100%;height:350px;"></canvas>
         </section>
       `,
@@ -312,67 +285,62 @@
       alerts: `
         <section class="card" style="grid-column: 1 / -1;">
           <h2>Peringatan dan Notifikasi</h2>
-          <ul>
-            <li>Peringatan: Air hampir habis!</li>
-            <li>Peringatan: Anomali dalam data kelembaban tanah!</li>
-            <li>Notifikasi: Pompa dinyalakan secara otomatis.</li>
-          </ul>
+          <div style="background:rgba(37,99,235,0.15);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;">
+            <h3 style="margin-bottom:0.5rem;color:#fff;">Peringatan: Air Hampir Habis!</h3>
+            <p style="margin-bottom:1rem;">Jumlah air dalam tangki sudah rendah. Segera isi tangki untuk memastikan sistem irigasi tetap berjalan dengan lancar.</p>
+            <button style="background:#2563eb;color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;border:none;cursor:pointer;">Tindak Lanjut</button>
+          </div>
+          <div style="background:rgba(37,99,235,0.15);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;">
+            <h3 style="margin-bottom:0.5rem;color:#fff;">Peringatan: Anomali Data Kelembaban Tanah</h3>
+            <p style="margin-bottom:1rem;">Terdapat ketidaksesuaian dalam data kelembaban tanah. Silakan cek sensor kelembaban atau sistem irigasi.</p>
+            <button style="background:#2563eb;color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;border:none;cursor:pointer;">Tindak Lanjut</button>
+          </div>
+          <div style="background:rgba(37,99,235,0.15);border-radius:16px;padding:1.5rem;">
+            <h3 style="margin-bottom:0.5rem;color:#fff;">Peringatan: Pompa Tidak Berfungsi</h3>
+            <p style="margin-bottom:1rem;">Pompa air tidak berfungsi sebagaimana mestinya. Segera periksa sistem pompa.</p>
+            <button style="background:#2563eb;color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;border:none;cursor:pointer;">Periksa Pompa</button>
+          </div>
         </section>
       `
     };
 
-    function loadPage(page) {
-      if (!(page in pages)) page = 'dashboard';
-      mainContent.innerHTML = pages[page];
+    function randomPercentage(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
 
-      // Re-bind button & event listeners when dashboard is loaded
-      if (page === 'dashboard') {
-        const pumpControlBtn = document.getElementById('pump-control');
-        const pumpStatus = document.getElementById('pump-status');
-
-        pumpControlBtn.style.backgroundColor = pumpStatus.textContent.toLowerCase().includes('menyala') ? '#2563eb' : '#dc2626';
-
-        pumpControlBtn.addEventListener('click', () => {
-          if (pumpStatus.textContent.toLowerCase().includes('menyala')) {
-            pumpStatus.textContent = 'Mati';
-            pumpControlBtn.textContent = 'Nyalakan Pompa';
-            pumpControlBtn.style.backgroundColor = '#dc2626';
-          } else {
-            pumpStatus.textContent = 'Menyala';
-            pumpControlBtn.textContent = 'Matikan Pompa';
-            pumpControlBtn.style.backgroundColor = '#2563eb';
-          }
-        });
-
-        // Also start updateStats interval again
-        updateStats();
-        clearInterval(window.statsInterval);
-        window.statsInterval = setInterval(updateStats, 10000);
+    function updateStats() {
+      const moistureVal = randomPercentage(50, 75);
+      const moistureElem = document.getElementById('moisture-status');
+      if (moistureElem) {
+        moistureElem.textContent = moistureVal + '%';
       }
-
-      if (page === 'graph') {
-        renderGraph();
-      }
-
-      if (page === 'settings') {
-        const form = document.getElementById('settings-form');
-        form.addEventListener('submit', e => {
-          e.preventDefault();
-          alert('Pengaturan berhasil disimpan: Ambang Kelembaban ' + form['moisture-threshold'].value + '%');
-        });
+      const waterLevels = ['Rendah', 'Medium', 'Tinggi'];
+      const randomWater = waterLevels[Math.floor(Math.random() * waterLevels.length)];
+      const waterLevelElem = document.getElementById('water-level');
+      if (waterLevelElem) {
+        waterLevelElem.textContent = randomWater;
       }
     }
 
-    function renderGraph() {
+    // --- Perbaikan: renderGraph support range waktu ---
+    function renderGraph(range = 'harian') {
       const ctx = document.getElementById('moistureGraph').getContext('2d');
       if (moistureChart != null) {
         moistureChart.destroy();
       }
-      const labels = [
-        '10 Apr', '11 Apr', '12 Apr', '13 Apr', '14 Apr', '15 Apr', '16 Apr', '17 Apr', '18 Apr', '19 Apr'
-      ];
-      const moistureData = [65, 62, 70, 74, 69, 55, 57, 60, 66, 63];
-      const pumpStatusData = [1, 1, 0, 1, 1, 0, 0, 1, 1, 0];
+
+      let labels, moistureData, pumpStatusData;
+      if (range === 'bulanan') {
+        labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
+        moistureData = [62, 65, 68, 70, 66, 64]; // contoh data bulanan
+        pumpStatusData = [15, 18, 20, 17, 16, 19]; // hari pompa menyala per bulan
+      } else {
+        labels = [
+          '10 Apr', '11 Apr', '12 Apr', '13 Apr', '14 Apr', '15 Apr', '16 Apr', '17 Apr', '18 Apr', '19 Apr'
+        ];
+        moistureData = [65, 62, 70, 74, 69, 55, 57, 60, 66, 63];
+        pumpStatusData = [1, 1, 0, 1, 1, 0, 0, 1, 1, 0];
+      }
 
       moistureChart = new Chart(ctx, {
         type: 'line',
@@ -380,7 +348,7 @@
           labels: labels,
           datasets: [
             {
-              label: 'Kelembaban Tanah (%)',
+              label: range === 'bulanan' ? 'Kelembaban Rata-rata (%)' : 'Kelembaban Tanah (%)',
               data: moistureData,
               borderColor: '#60a5fa',
               backgroundColor: 'rgba(96, 165, 250, 0.3)',
@@ -391,13 +359,13 @@
               pointHoverRadius: 8,
             },
             {
-              label: 'Status Pompa (On=1, Off=0)',
+              label: range === 'bulanan' ? 'Pompa Menyala (hari)' : 'Status Pompa (On=1, Off=0)',
               data: pumpStatusData,
               borderColor: '#fde68a',
               backgroundColor: 'rgba(253, 230, 138, 0.3)',
               fill: true,
               type: 'line',
-              stepped: true,
+              stepped: range === 'harian',
               yAxisID: 'y1',
               pointRadius: 4,
               pointHoverRadius: 6,
@@ -435,8 +403,8 @@
               type: 'linear',
               display: true,
               position: 'left',
-              min: 40,
-              max: 80,
+              min: range === 'bulanan' ? 50 : 40,
+              max: range === 'bulanan' ? 80 : 80,
               ticks: {
                 color: '#60a5fa',
                 stepSize: 5,
@@ -458,18 +426,20 @@
               display: true,
               position: 'right',
               min: 0,
-              max: 1.5,
+              max: range === 'bulanan' ? 31 : 1.5,
               ticks: {
                 color: '#fde68a',
-                stepSize: 1,
-                callback: v => (v === 1 ? 'On' : 'Off'),
+                stepSize: range === 'bulanan' ? 5 : 1,
+                callback: range === 'bulanan'
+                  ? undefined
+                  : v => (v === 1 ? 'On' : 'Off'),
               },
               grid: {
                 drawOnChartArea: false,
               },
               title: {
                 display: true,
-                text: 'Status Pompa',
+                text: range === 'bulanan' ? 'Pompa Menyala (hari)' : 'Status Pompa',
                 color: '#fde68a',
                 font: {
                   weight: 'bold',
@@ -481,12 +451,127 @@
       });
     }
 
+    function loadPage(page) {
+      if (!(page in pages)) page = 'dashboard';
+      mainContent.innerHTML = pages[page];
+
+      // Dashboard logic
+      if (page === 'dashboard') {
+        const pumpControlBtn = document.getElementById('pump-control');
+        const pumpStatus = document.getElementById('pump-status');
+        pumpStatus.textContent = pumpIsOn ? 'Menyala' : 'Mati';
+        pumpControlBtn.textContent = pumpIsOn ? 'Matikan Pompa' : 'Nyalakan Pompa';
+        pumpControlBtn.style.backgroundColor = pumpIsOn ? '#2563eb' : '#dc2626';
+
+        // Remove old event listener by cloneNode
+        const newPumpControlBtn = pumpControlBtn.cloneNode(true);
+        pumpControlBtn.parentNode.replaceChild(newPumpControlBtn, pumpControlBtn);
+
+        newPumpControlBtn.addEventListener('click', () => {
+          pumpIsOn = !pumpIsOn;
+          pumpStatus.textContent = pumpIsOn ? 'Menyala' : 'Mati';
+          newPumpControlBtn.textContent = pumpIsOn ? 'Matikan Pompa' : 'Nyalakan Pompa';
+          newPumpControlBtn.style.backgroundColor = pumpIsOn ? '#2563eb' : '#dc2626';
+          alert(pumpIsOn ? 'Pompa berhasil dinyalakan!' : 'Pompa berhasil dimatikan!');
+        });
+
+        updateStats();
+        clearInterval(statsInterval);
+        statsInterval = setInterval(updateStats, 10000);
+      } else {
+        clearInterval(statsInterval);
+      }
+
+      if (page === 'graph') {
+        // Default: harian
+        let range = document.getElementById('range-select').value;
+        renderGraph(range);
+
+        // Ganti chart saat range berubah
+        document.getElementById('range-select').addEventListener('change', function() {
+          renderGraph(this.value);
+        });
+
+        // --- Tambahan: Range waktu & unduh data + Analisis ---
+        const downloadBtn = document.getElementById('download-btn');
+        downloadBtn.addEventListener('click', () => {
+          // Pilih format
+          const format = prompt('Pilih format unduhan: "csv" atau "excel"', 'csv');
+          if (!format) return;
+
+          // Ambil rentang waktu
+          const range = document.getElementById('range-select').value;
+
+          // Simulasi data (ganti dengan data asli jika ada)
+          let data, kelembabanArr;
+          if (range === 'bulanan') {
+            data = [
+              ['Bulan', 'Kelembaban Rata-rata (%)', 'Pompa Menyala (hari)'],
+              ['April 2024', 62, 15],
+              ['Mei 2024', 68, 18]
+            ];
+            kelembabanArr = [62, 68];
+          } else {
+            data = [
+              ['Tanggal', 'Kelembaban (%)', 'Status Pompa'],
+              ['2024-06-20', 65, 'Menyala'],
+              ['2024-06-21', 60, 'Mati'],
+              ['2024-06-22', 70, 'Menyala']
+            ];
+            kelembabanArr = [65, 60, 70];
+          }
+
+          // Analisis otomatis
+          let avg = kelembabanArr.reduce((a, b) => a + b, 0) / kelembabanArr.length;
+          let analysis = [
+            '',
+            'Analisis/Wawasan:',
+            `Rata-rata kelembaban: ${avg.toFixed(1)}%`,
+            avg < 60
+              ? 'Kelembaban cenderung rendah, pertimbangkan penyiraman lebih sering.'
+              : 'Kelembaban cukup baik, sistem berjalan normal.'
+          ];
+
+          // Kompilasi data ke CSV
+          if (format === 'csv') {
+            let csv = data.map(row => row.join(',')).join('\n') + '\n' + analysis.join('\n');
+            let blob = new Blob([csv], { type: 'text/csv' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = `data_${range}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          } else if (format === 'excel') {
+            alert('Format Excel belum didukung di demo ini. Silakan pilih CSV.');
+          } else {
+            alert('Format tidak dikenali.');
+          }
+        });
+      }
+
+      if (page === 'settings') {
+        const form = document.getElementById('settings-form');
+        const updateBtn = document.getElementById('update-threshold');
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          alert('Pengaturan berhasil disimpan: Ambang Kelembaban ' + form['moisture-threshold'].value + '%');
+        });
+        if (updateBtn) {
+          updateBtn.addEventListener('click', function() {
+            alert('Data berhasil diupdate!');
+          });
+        }
+      }
+    }
+
     navLinks.forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
         const page = e.target.getAttribute('data-page');
         loadPage(page);
-        // Update active link styling
         navLinks.forEach(l => l.classList.remove('active'));
         e.target.classList.add('active');
       });
@@ -494,9 +579,7 @@
 
     // Load default page dashboard on start
     loadPage('dashboard');
-    // highlight first nav link as active
     navLinks[0].classList.add('active');
   </script>
 </body>
 </html>
-

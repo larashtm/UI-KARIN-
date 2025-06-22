@@ -6,8 +6,11 @@
   "scripts": {
     "build": "echo 'No build required'"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  },
   "keywords": [],
   "author": "lar",
   "license": "MIT"
